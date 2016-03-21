@@ -1,0 +1,31 @@
+Philip K Dick's short story “The Minority Report” is a work of fiction; his world treats the
+extraordinary as simply ordinary. Interplanetary travel and colonization of other planets are so
+commonplace they are only ever casually mentioned by characters throughout the story; psychics, or
+“precogs”, are accepted as a cornerstone of law enforcement. While this world has fantastic
+technologies that greatly differ from those available in today's world, there nonetheless exists a strong
+parallel between the style of law enforcement utilized in “The Minority Report” and utilized by the
+NSA.
+In June of 2013, the US whistle-blower Edward Snowden rocked the world when he revealed the
+widespread electronic surveillance program that the NSA had implemented in the name of counter-
+terrorism. The ensuing document leak revealed that not only does the NSA gather communications of
+terror suspect or individuals in communication with terror suspects, but communications of the general
+population as well (EFF). Using fiber-optic splitters installed in major network backbones, the NSA has
+access to network data for the majority of the US (EFF). With this access, the NSA is able to mine
+network data in real time for metrics such as keywords, connections, and patterns in order to build
+connections between individuals as well as store relevant data for later retrieval and analysis (EFF).
+Unlike the approach of “predictive policing” which we learned about in class, this approach to
+protecting the US is focused on the individual instead of the community. In the case of predictive
+policing, police are dispatched to areas with historically high crime and areas in which real time
+metrics such as social media trends indicate disruptive or dangerous activity (PredPol). The unit ofstudy is never is the individual, but rather the community; the individual is merely a contributor to
+overall statistics and trends. However, in the case of the NSA program, the unit of study is the
+individual. The NSA looks at the behavior of each individual in order to determine if they are a threat
+to the nation.
+This style of tracking the individual is exactly how the Precrime Division of the police force operates in
+“The Minority Report”. The Precrime Division utilizes the psychic ability of precogs to monitor the
+behavior of individuals, and act against those who pose a threat. Focusing on the community as a unit
+of study would be useless as it would not allow the Precrime Division to single out individuals.
+The similarity in style stems from the similarity in goals. In the case both “The Minority Report” and
+the NSA, the goal is for a zero crime rate. The only way that can be attained is by catching the
+individual prior to their commission of the crime; catching them in the act or after the fact is already
+too late. As a result, the style of law enforcement utilized in “The Minority Report” and by the NSA is
+the same; track every individual in order to ensure that no one can commit crimes.
