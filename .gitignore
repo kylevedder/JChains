@@ -1,13 +1,23 @@
-*/target/
-*/.settings/
-.classpath
-.project
-*.class
-*.log
-
 # Package Files #
 *.jar
 *.war
 *.ear
 *.tar
 *.properties
+
+# Eclipse
+.classpath
+.project
+.settings/
+
+# Intellij
+.idea/
+*.iml
+*.iws
+
+# Mac
+.DS_Store
+
+# Maven
+log/
+target/
