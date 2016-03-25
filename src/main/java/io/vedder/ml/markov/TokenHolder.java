@@ -25,25 +25,29 @@ public class TokenHolder {
 		r = new Random();
 		this.delimitToken = new DelimitToken();
 
-		// tokenMap.put(new LookbackContainer(endToken),
-		// Arrays.asList(new NextWordContainer<Token, Integer>(startToken, 1)));
-		// tokenMap.put(new LookbackContainer(startToken), new LinkedList<>());
 		tokenMap.put(new LookbackContainer(delimitToken), new LinkedList<>());
 	}
 
+	public int getLookback() {
+		return lookBack;
+	}
+
 	public void add(List<Token> tokens) {
+
 		for (int wordIndex = lookBack; wordIndex < tokens.size() - 1; wordIndex++) {
 			List<List<Token>> lookBackQueueList = new LinkedList<>();
 			List<Token> lookBackQueue = new LinkedList<>();
 			Token t;
-			for (int lookBackCount = 0; lookBackCount < lookBack; lookBackCount++) {
+
+			innerLoop: for (int lookBackCount = 0; lookBackCount < lookBack; lookBackCount++) {
 				t = tokens.get(wordIndex - lookBackCount);
 				lookBackQueue.add(0, t);
 				lookBackQueueList.add(new LinkedList<>(lookBackQueue));
 				if (t == delimitToken) {
-					break;
+					break innerLoop;
 				}
 			}
+
 			for (List<Token> l : lookBackQueueList) {
 				this.add(l, tokens.get(wordIndex + 1));
 			}
@@ -52,14 +56,14 @@ public class TokenHolder {
 
 	public void add(List<Token> prev, Token next) {
 		List<NextWordContainer<Token, Integer>> nextElementList = null;
-		if (tokenMap.containsKey(new LookbackContainer(prev))) {
-			nextElementList = tokenMap.get(new LookbackContainer(prev));
+		LookbackContainer lbc = new LookbackContainer(prev);
+		if (tokenMap.containsKey(lbc)) {
+			nextElementList = tokenMap.get(lbc);
 		} else {
 			nextElementList = new LinkedList<>();
 		}
 
 		boolean foundPrevEntry = false;
-
 		if (!nextElementList.isEmpty()) {
 			for (NextWordContainer<Token, Integer> container : nextElementList) {
 				if (container.getElem1().equals(next)) {
@@ -74,7 +78,7 @@ public class TokenHolder {
 			nextElementList.add(new NextWordContainer<Token, Integer>(next, 1));
 		}
 
-		tokenMap.put(new LookbackContainer(prev), nextElementList);
+		tokenMap.put(lbc, nextElementList);
 
 	}
 
@@ -83,7 +87,7 @@ public class TokenHolder {
 	}
 
 	public Token getNext(LookbackContainer look) {
-		List<NextWordContainer<Token, Integer>> nextElementList = null;// tokenMap.get(look);
+		List<NextWordContainer<Token, Integer>> nextElementList = null;
 
 		while (!look.isEmpty() && (nextElementList = tokenMap.get(look)) == null) {
 			look = look.shrinkContainer();

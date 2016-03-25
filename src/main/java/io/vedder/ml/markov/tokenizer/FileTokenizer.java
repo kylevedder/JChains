@@ -9,23 +9,32 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import io.vedder.ml.markov.LookbackContainer;
 import io.vedder.ml.markov.TokenHolder;
 import io.vedder.ml.markov.tokens.StringToken;
 import io.vedder.ml.markov.tokens.Token;
 
-public class FileTokenizer {
+public class FileTokenizer extends Tokenizer {
 
 	private final List<String> END_MARKS;
-	private TokenHolder th;
+	private final String filePath;
 
-	public FileTokenizer(TokenHolder th) {
+	public FileTokenizer(TokenHolder th, String filePath) {
+		super(th);
 		END_MARKS = Arrays.asList(".", "?", "!");
-		this.th = th;
+		this.filePath = filePath;
+		new File(filePath).toPath();// checks to ensure that file can be
+									// accessed, i.e. will throw error if fails
 	}
 
-	public List<Token> getTokens(String filePath) {
+	@Override
+	public void addTokens() {
+		th.add(getTokens());
+	}
+
+	private List<Token> getTokens() {
 		List<String> listStrings = listStrings(filePath);
-		List<Token> tokenList = new ArrayList<>(1000);
+		List<Token> tokenList = new LinkedList<>();
 		tokenList.add(th.getDelimitToken());
 		listStrings.forEach(s -> {
 			tokenList.add(new StringToken(s));
@@ -61,6 +70,35 @@ public class FileTokenizer {
 			e.printStackTrace();
 		}
 		return lines;
+	}
+
+	@Override
+	public List<List<Token>> generateTokenLists(int numLists) {
+		List<List<Token>> lines = new LinkedList<>();
+		for (int i = 0; i < numLists; i++) {
+			List<Token> line = new ArrayList<>(1000);
+
+			LookbackContainer c = new LookbackContainer(th.getDelimitToken());
+			Token t = null;
+			while ((t = th.getNext(c)) != th.getDelimitToken()) {
+				line.add(t);
+				c.add(t, th.getLookback());
+			}
+			lines.add(line);
+		}
+		return lines;
+	}
+
+	@Override
+	public void printTokens(List<Token> tokens) {
+		List<String> punctuation = Arrays.asList(",", ";", ":", ".", "?", "!", "-");
+		tokens.forEach(w -> {
+			if (!punctuation.contains(w.toString())) {
+				System.out.print(" ");
+			}
+			System.out.print(w.toString());
+		});
+		System.out.print("\n");
 	}
 
 }
