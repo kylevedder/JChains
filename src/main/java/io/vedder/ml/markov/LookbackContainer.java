@@ -7,48 +7,56 @@ import java.util.List;
 
 import io.vedder.ml.markov.tokens.Token;
 
-public class LookbackContainer {
-	List<Token> tokenList = null;
+public class LookbackContainer<T> {
+	private List<Token<T>> tokenList = null;
 
-	public LookbackContainer(Token... ts) {
-		tokenList = Arrays.asList(ts);
+	public LookbackContainer(Token<T> ts) {
+		tokenList = new LinkedList<>(Arrays.asList(ts));
 	}
 
-	public LookbackContainer(List<Token> ts) {
+	public LookbackContainer(List<Token<T>> ts) {
 		tokenList = ts;
 	}
 
-	public void add(Token t, int maxSize) {
-		List<Token> tl = new LinkedList<>();
-		if (tokenList.size() >= maxSize) {
-			Iterator<Token> itr = tokenList.listIterator(tokenList.size() - maxSize);
-
-			while (itr.hasNext()) {
-				tl.add(itr.next());
-			}
+	/**
+	 * Adds a token while ensuring that the maximum size property is maintained.
+	 * 
+	 * @param token
+	 * @param maxSize
+	 */
+	public void addToken(Token<T> token, int maxSize) {
+		if (tokenList == null) {
+			tokenList = new LinkedList<>();
 		}
-		tl.add(t);
-		tokenList = tl;
+
+		if (tokenList.size() >= maxSize) {
+			tokenList = tokenList.subList(tokenList.size() - maxSize + 1, tokenList.size());
+		}
+		tokenList.add(token);
 	}
 
+	/**
+	 * Returns if this container is empty.
+	 * 
+	 * @return
+	 */
 	public boolean isEmpty() {
 		return this.tokenList.isEmpty();
 	}
 
-	public LookbackContainer shrinkContainer() {
-		List<Token> lst = new LinkedList<>(tokenList);
-		if (!lst.isEmpty())
+	public LookbackContainer<T> shrinkContainer() {
+		List<Token<T>> lst = new LinkedList<>(tokenList);
+		if (!lst.isEmpty()) {
 			lst.remove(0);
-		return new LookbackContainer(lst);
+		}
+		return new LookbackContainer<T>(lst);
 	}
 
 	@Override
 	public int hashCode() {
 		final int prime = 31;
 		int result = 1;
-		int count = 1;
-		for (Token t : tokenList)
-			result *= count++ * prime * result + ((tokenList == null) ? 0 : t.hashCode());
+		result = prime * result + ((tokenList == null) ? 0 : tokenList.hashCode());
 		return result;
 	}
 

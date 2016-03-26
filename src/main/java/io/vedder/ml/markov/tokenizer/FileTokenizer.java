@@ -1,88 +1,77 @@
 package io.vedder.ml.markov.tokenizer;
 
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 import io.vedder.ml.markov.LookbackContainer;
+import io.vedder.ml.markov.Main;
 import io.vedder.ml.markov.TokenHolder;
-import io.vedder.ml.markov.tokens.StringToken;
 import io.vedder.ml.markov.tokens.Token;
+import io.vedder.ml.markov.utils.Utils;
 
-public class FileTokenizer extends Tokenizer {
+public class FileTokenizer extends Tokenizer<String> {
 
-	private final List<String> END_MARKS;
-	private final String filePath;
+	private final Set<String> END_MARKS;
+	private final List<String> listStrings;
 
-	public FileTokenizer(TokenHolder th, String filePath) {
+	public FileTokenizer(TokenHolder<String> th, String filePath) {
 		super(th);
-		END_MARKS = Arrays.asList(".", "?", "!");
-		this.filePath = filePath;
-		new File(filePath).toPath();// checks to ensure that file can be
-									// accessed, i.e. will throw error if fails
+		END_MARKS = new HashSet<>(Arrays.asList(".", "?", "!"));
+		this.listStrings = splitStrings(Utils.readFile(filePath));
 	}
 
 	@Override
-	public void addTokens() {
-		th.add(getTokens());
+	public void addTokensToHolder() {
+		List<Token<String>> l = getTokens(this.listStrings);
+		if (Main.verbose)
+			System.out.println("Adding Tokens...");
+		th.addTokenList(l);
 	}
 
-	private List<Token> getTokens() {
-		List<String> listStrings = listStrings(filePath);
-		List<Token> tokenList = new LinkedList<>();
+	private List<Token<String>> getTokens(List<String> listStrings) {
+		List<Token<String>> tokenList = new LinkedList<>();
 		tokenList.add(th.getDelimitToken());
 		listStrings.forEach(s -> {
-			tokenList.add(new StringToken(s));
+			tokenList.add(new Token<String>(s));
 			if (END_MARKS.contains(s)) {
 				tokenList.add(th.getDelimitToken());
 			}
 		});
+
+		// check to see if ends with delimiter token
 		if (tokenList.get(tokenList.size() - 1) != th.getDelimitToken()) {
 			tokenList.add(th.getDelimitToken());
 		}
 		return tokenList;
 	}
 
-	private List<String> listStrings(String filePath) {
-		return tokenize(readFile(filePath));
-	}
-
-	private List<String> tokenize(List<String> lines) {
+	private List<String> splitStrings(List<String> lines) {
 		// Regex from:
 		// http://stackoverflow.com/questions/24222730/split-a-string-and-separate-by-punctuation-and-whitespace
-		List<String> tokens = lines.parallelStream()
+		// Sorry about the functional mess...
+		List<String> splits = lines.parallelStream()
 				.map(l -> Arrays.asList(l.replaceAll("  ", " ")
-						.split("\\s+|(?=\\W\\p{Punct}|\\p{Punct}\\W)|(?<=\\W\\p{Punct}|\\p{Punct}\\W})")))// ("\\s+|(?=\\p{Punct})|(?<=\\p{Punct})")))
+						.split("\\s+|(?=\\W\\p{Punct}|\\p{Punct}\\W)|(?<=\\W\\p{Punct}|\\p{Punct}\\W})")))
 				.flatMap(l -> l.stream()).filter(w -> !w.isEmpty() && !w.equals("")).collect(Collectors.toList());
-		return tokens;
-	}
-
-	private List<String> readFile(String filePath) {
-		List<String> lines = new LinkedList<>();
-		try {
-			Files.lines(new File(filePath).toPath()).forEach(l -> lines.add(l + "\n"));
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return lines;
+		return splits;
 	}
 
 	@Override
-	public List<List<Token>> generateTokenLists(int numLists) {
-		List<List<Token>> lines = new LinkedList<>();
+	public List<List<Token<String>>> generateTokenLists(int numLists) {
+		List<List<Token<String>>> lines = new LinkedList<>();
 		for (int i = 0; i < numLists; i++) {
-			List<Token> line = new ArrayList<>(1000);
+			List<Token<String>> line = new ArrayList<>(100);
 
-			LookbackContainer c = new LookbackContainer(th.getDelimitToken());
-			Token t = null;
+			LookbackContainer<String> c = new LookbackContainer<>(th.getDelimitToken());
+			Token<String> t = null;
 			while ((t = th.getNext(c)) != th.getDelimitToken()) {
 				line.add(t);
-				c.add(t, th.getLookback());
+				c.addToken(t, th.getLookback());
 			}
 			lines.add(line);
 		}
@@ -90,7 +79,7 @@ public class FileTokenizer extends Tokenizer {
 	}
 
 	@Override
-	public void printTokens(List<Token> tokens) {
+	public void printTokens(List<Token<String>> tokens) {
 		List<String> punctuation = Arrays.asList(",", ";", ":", ".", "?", "!", "-");
 		tokens.forEach(w -> {
 			if (!punctuation.contains(w.toString())) {

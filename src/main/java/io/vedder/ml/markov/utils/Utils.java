@@ -4,6 +4,9 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.file.Files;
+import java.util.LinkedList;
+import java.util.List;
 
 public class Utils {
 	public static void writeToFile(String filePath, String contents) {
@@ -21,5 +24,15 @@ public class Utils {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public static List<String> readFile(String filePath) {
+		List<String> lines = new LinkedList<>();
+		try {
+			Files.lines(new File(filePath).toPath()).forEach(l -> lines.add(l + "\n"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return lines;
 	}
 }

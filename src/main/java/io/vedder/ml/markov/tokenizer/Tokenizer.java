@@ -5,17 +5,17 @@ import java.util.List;
 import io.vedder.ml.markov.TokenHolder;
 import io.vedder.ml.markov.tokens.Token;
 
-public abstract class Tokenizer {
-	
-	protected final TokenHolder th;
+public abstract class Tokenizer<T> {
 
-	public Tokenizer(TokenHolder th) {
+	protected final TokenHolder<T> th;
+
+	public Tokenizer(TokenHolder<T> th) {
 		this.th = th;
 	}
 
-	public abstract void addTokens();
-	
-	public abstract List<List<Token>> generateTokenLists(int numLists);
-	
-	public abstract void printTokens(List<Token> tokens);
+	public abstract void addTokensToHolder();
+
+	public abstract List<List<Token<T>>> generateTokenLists(int numLists);
+
+	public abstract void printTokens(List<Token<T>> tokens);
 }
