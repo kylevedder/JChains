@@ -1,4 +1,4 @@
-# SentenceGenerator
+# Sentence Generator
 A Markov Chain based sentence or tweet generator written in Java. Supports any written language and an arbitrary lookback.
 
 Requirements
