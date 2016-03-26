@@ -20,8 +20,11 @@ Sample Outputs
 **Donald Trump**
 
 >Be careful, Lyin ' Ted Cruz just used a picture of Melania, he did.
+>
 >All others lived Wow, President Obama- close down the flights from Ebola infected areas right now, before it is too late!
+>
 >Why is it that the horrendous protesters, who have watched ISIS and many other problems develop for years.
+>
 >Crazy @ megynkelly show, NATO!
 
 **William Shakespeare**
