@@ -26,7 +26,7 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-//		args = new String[] { "-v", "-i", "50000", "2", "10", "AllsWellThatEndsWell.txt" };
+		args = new String[] { "-v", "-i", "50000", "2", "10", "inputs/AllsWellThatEndsWell.txt" };
 
 		parseArgs(Arrays.asList(args));
 
@@ -47,7 +47,7 @@ public class Main {
 		List<List<Token>> tokensLists = fileTokenizer.generateTokenLists(numSent);
 		
 		log.info("Printing Tokens...\n" + "===============\n");
-		tokensLists.forEach(l -> fileTokenizer.printTokens(l));
+		tokensLists.forEach(l -> fileTokenizer.outputTokens(l));
 
 	}
 

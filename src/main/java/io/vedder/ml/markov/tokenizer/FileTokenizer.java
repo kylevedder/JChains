@@ -80,7 +80,7 @@ public class FileTokenizer extends Tokenizer<String> {
 	}
 
 	@Override
-	public void printTokens(List<Token> tokens) {
+	public void outputTokens(List<Token> tokens) {
 		List<String> punctuation = Arrays.asList(",", ";", ":", ".", "?", "!", "-");
 		tokens.forEach(w -> {
 			if (!punctuation.contains(w.toString())) {
