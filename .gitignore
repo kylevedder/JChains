@@ -4,6 +4,7 @@
 *.ear
 *.tar
 *.properties
+*~
 
 # Eclipse
 .classpath
