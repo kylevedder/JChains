@@ -18,7 +18,7 @@ import io.vedder.ml.markov.tokens.Token;
 public class TokenHolder<T> {
 	static Logger log = Logger.getLogger(Main.class.getName());
 
-	private Map<LookbackContainer<T>, Map<Token<T>, Integer>> tokenMap;
+	private Map<LookbackContainer<T>, Map<Token, Integer>> tokenMap;
 	private Random r = null;
 
 	private DelimitToken delimitToken = DelimitToken.getInstance();
@@ -36,7 +36,7 @@ public class TokenHolder<T> {
 		return lookBack;
 	}
 
-	public void addTokenList(List<Token<T>> tokens) {
+	public void addTokenList(List<Token> tokens) {
 		log.info("Chunking " + tokens.size() + " tokens...\n");
 		for (int wordIndex = lookBack; wordIndex < tokens.size() - 1; wordIndex++) {
 
@@ -47,9 +47,9 @@ public class TokenHolder<T> {
 				log.info(String.format("|%7d\n", wordIndex));
 			}
 			// List for the lookback
-			List<Token<T>> lookBackList = new ArrayList<>(lookBack);
+			List<Token> lookBackList = new ArrayList<>(lookBack);
 
-			Token<T> t = null;
+			Token t = null;
 
 			// loop adds lists to ensure that lookback lists of size 1 to size
 			// "lookBack" are added to the lookbackList
@@ -69,8 +69,8 @@ public class TokenHolder<T> {
 		log.info("\n");
 	}
 
-	public void addToken(List<Token<T>> prev, Token<T> next) {
-		Map<Token<T>, Integer> nextElementMap = null;
+	public void addToken(List<Token> prev, Token next) {
+		Map<Token, Integer> nextElementMap = null;
 		LookbackContainer<T> lbc = new LookbackContainer<T>(prev);
 		if (tokenMap.containsKey(lbc)) {
 			nextElementMap = tokenMap.get(lbc);
@@ -98,8 +98,8 @@ public class TokenHolder<T> {
 	 * @param look
 	 * @return
 	 */
-	public Token<T> getNext(LookbackContainer<T> look) {
-		Map<Token<T>, Integer> nextElementList = null;
+	public Token getNext(LookbackContainer<T> look) {
+		Map<Token, Integer> nextElementList = null;
 
 		// Look for the largest lookback container which has a match. May be
 		// empty.
@@ -112,12 +112,12 @@ public class TokenHolder<T> {
 
 		int sum = 0;
 		// calculate sum
-		for (Entry<Token<T>, Integer> entry : nextElementList.entrySet()) {
+		for (Entry<Token, Integer> entry : nextElementList.entrySet()) {
 			sum += entry.getValue();
 		}
 
 		int randInt = r.nextInt(sum) + 1;
-		for (Entry<Token<T>, Integer> entry : nextElementList.entrySet()) {
+		for (Entry<Token, Integer> entry : nextElementList.entrySet()) {
 			if (randInt <= entry.getValue()) {
 				return entry.getKey();
 			}
@@ -130,7 +130,7 @@ public class TokenHolder<T> {
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		List<String> lst = new LinkedList<>();
-		for (Entry<LookbackContainer<T>, Map<Token<T>, Integer>> e : tokenMap.entrySet()) {
+		for (Entry<LookbackContainer<T>, Map<Token, Integer>> e : tokenMap.entrySet()) {
 			lst.add(e.toString() + "\n");
 
 		}

@@ -11,6 +11,7 @@ import java.util.stream.Collectors;
 import io.vedder.ml.markov.LookbackContainer;
 import io.vedder.ml.markov.Main;
 import io.vedder.ml.markov.TokenHolder;
+import io.vedder.ml.markov.tokens.StringToken;
 import io.vedder.ml.markov.tokens.Token;
 import io.vedder.ml.markov.utils.Utils;
 
@@ -27,17 +28,17 @@ public class FileTokenizer extends Tokenizer<String> {
 
 	@Override
 	public void addTokensToHolder() {
-		List<Token<String>> l = getTokens(this.listStrings);
+		List<Token> l = getTokens(this.listStrings);
 		if (Main.verbose)
 			System.out.println("Adding Tokens...");
 		th.addTokenList(l);
 	}
 
-	private List<Token<String>> getTokens(List<String> listStrings) {
-		List<Token<String>> tokenList = new LinkedList<>();
+	private List<Token> getTokens(List<String> listStrings) {
+		List<Token> tokenList = new LinkedList<>();
 		tokenList.add(th.getDelimitToken());
 		listStrings.forEach(s -> {
-			tokenList.add(new Token<String>(s));
+			tokenList.add(new StringToken(s));
 			if (END_MARKS.contains(s)) {
 				tokenList.add(th.getDelimitToken());
 			}
@@ -62,13 +63,13 @@ public class FileTokenizer extends Tokenizer<String> {
 	}
 
 	@Override
-	public List<List<Token<String>>> generateTokenLists(int numLists) {
-		List<List<Token<String>>> lines = new LinkedList<>();
+	public List<List<Token>> generateTokenLists(int numLists) {
+		List<List<Token>> lines = new LinkedList<>();
 		for (int i = 0; i < numLists; i++) {
-			List<Token<String>> line = new ArrayList<>(100);
+			List<Token> line = new ArrayList<>(100);
 
 			LookbackContainer<String> c = new LookbackContainer<>(th.getDelimitToken());
-			Token<String> t = null;
+			Token t = null;
 			while ((t = th.getNext(c)) != th.getDelimitToken()) {
 				line.add(t);
 				c.addToken(t, th.getLookback());
@@ -79,7 +80,7 @@ public class FileTokenizer extends Tokenizer<String> {
 	}
 
 	@Override
-	public void printTokens(List<Token<String>> tokens) {
+	public void printTokens(List<Token> tokens) {
 		List<String> punctuation = Arrays.asList(",", ";", ":", ".", "?", "!", "-");
 		tokens.forEach(w -> {
 			if (!punctuation.contains(w.toString())) {

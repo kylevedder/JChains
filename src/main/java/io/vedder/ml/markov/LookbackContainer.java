@@ -8,13 +8,13 @@ import java.util.List;
 import io.vedder.ml.markov.tokens.Token;
 
 public class LookbackContainer<T> {
-	private List<Token<T>> tokenList = null;
+	private List<Token> tokenList = null;
 
-	public LookbackContainer(Token<T> ts) {
+	public LookbackContainer(Token ts) {
 		tokenList = new LinkedList<>(Arrays.asList(ts));
 	}
 
-	public LookbackContainer(List<Token<T>> ts) {
+	public LookbackContainer(List<Token> ts) {
 		tokenList = ts;
 	}
 
@@ -24,7 +24,7 @@ public class LookbackContainer<T> {
 	 * @param token
 	 * @param maxSize
 	 */
-	public void addToken(Token<T> token, int maxSize) {
+	public void addToken(Token token, int maxSize) {
 		if (tokenList == null) {
 			tokenList = new LinkedList<>();
 		}
@@ -45,7 +45,7 @@ public class LookbackContainer<T> {
 	}
 
 	public LookbackContainer<T> shrinkContainer() {
-		List<Token<T>> lst = new LinkedList<>(tokenList);
+		List<Token> lst = new LinkedList<>(tokenList);
 		if (!lst.isEmpty()) {
 			lst.remove(0);
 		}

@@ -15,7 +15,7 @@ public abstract class Tokenizer<T> {
 
 	public abstract void addTokensToHolder();
 
-	public abstract List<List<Token<T>>> generateTokenLists(int numLists);
+	public abstract List<List<Token>> generateTokenLists(int numLists);
 
-	public abstract void printTokens(List<Token<T>> tokens);
+	public abstract void printTokens(List<Token> tokens);
 }
