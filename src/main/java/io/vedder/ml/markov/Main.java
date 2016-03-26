@@ -26,7 +26,7 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		args = new String[] { "-v", "-i", "50000", "2", "10", "AllsWellThatEndsWell.txt" };
+//		args = new String[] { "-v", "-i", "50000", "2", "10", "AllsWellThatEndsWell.txt" };
 
 		parseArgs(Arrays.asList(args));
 
