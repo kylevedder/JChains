@@ -3,7 +3,7 @@
 *.war
 *.ear
 *.tar
-*.properties
+#*.properties
 *~
 
 # Eclipse
