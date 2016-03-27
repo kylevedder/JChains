@@ -21,25 +21,27 @@ These are a few examples of implementations.
 ####Sentence Generator
 
 **Source**
-		
-		int mapInitialSize = 1000;
-		int lookback = 3;
-		String filepath = "test.txt"
-		
-		TokenHolder<String> tokenHolder = new MapTokenHolder<>(mapInitialSize);
-		
-		log.info("Starting FileTokenizer creation...\n");
-		FileTokenizer fileTokenizer = new FileTokenizer(tokenHolder, lookback, filePath);
-		
-		log.info("Generating Token Lists...\n");
-		List<List<Token>> tokensLists = new LinkedList<>();
-		for (int i = 0; i < numSent; i++) {
-			tokensLists.add(fileTokenizer.generateTokenList());
-		}
-		
-		log.info("Printing Tokens...\n" + "===============\n");
-		tokensLists.forEach(l -> fileTokenizer.outputTokens(l));
-		
+
+```java		
+int mapInitialSize = 1000;
+int lookback = 3;
+String filepath = "test.txt"
+
+TokenHolder<String> tokenHolder = new MapTokenHolder<>(mapInitialSize);
+
+log.info("Starting FileTokenizer creation...\n");
+FileTokenizer fileTokenizer = new FileTokenizer(tokenHolder, lookback, filePath);
+
+log.info("Generating Token Lists...\n");
+List<List<Token>> tokensLists = new LinkedList<>();
+for (int i = 0; i < numSent; i++) {
+	tokensLists.add(fileTokenizer.generateTokenList());
+}
+
+log.info("Printing Tokens...\n" + "===============\n");
+tokensLists.forEach(l -> fileTokenizer.outputTokens(l));
+
+```	
  
 
 
