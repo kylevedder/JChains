@@ -1,77 +1,40 @@
 package io.vedder.ml.markov;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
-
-import org.apache.log4j.Logger;
-
 import java.util.Random;
 
-import io.vedder.ml.markov.tokens.DelimitToken;
 import io.vedder.ml.markov.tokens.Token;
 
 public class TokenHolder<T> {
-	static Logger log = Logger.getLogger(Main.class.getName());
+	
 
 	private Map<LookbackContainer<T>, Map<Token, Integer>> tokenMap;
 	private Random r = null;
 
-	private DelimitToken delimitToken = DelimitToken.getInstance();
-
-	private int lookBack = 0;
-
-	public TokenHolder(int lookBack, int mapInitialSize) {
+	/**
+	 * Data structure for storing and retrieving {@link LookbackContainer}s and Tokens.
+	 * @param mapInitialSize
+	 */
+	public TokenHolder(int mapInitialSize) {
 		r = new Random();
-		this.lookBack = lookBack;
 		tokenMap = new HashMap<>(mapInitialSize);
-		tokenMap.put(new LookbackContainer(delimitToken), new HashMap<>());
 	}
 
-	public int getLookback() {
-		return lookBack;
-	}
 
-	public void addTokenList(List<Token> tokens) {
-		log.info("Chunking " + tokens.size() + " tokens...\n");
-		for (int wordIndex = lookBack; wordIndex < tokens.size() - 1; wordIndex++) {
-
-			if (wordIndex % 1000 == 0) {
-				log.info(".");
-			}
-			if (wordIndex % 10000 == 0) {
-				log.info(String.format("|%7d\n", wordIndex));
-			}
-			// List for the lookback
-			List<Token> lookBackList = new ArrayList<>(lookBack);
-
-			Token t = null;
-
-			// loop adds lists to ensure that lookback lists of size 1 to size
-			// "lookBack" are added to the lookbackList
-			chunkLoop: for (int lookBackCount = 0; lookBackCount < lookBack; lookBackCount++) {
-				t = tokens.get(wordIndex - lookBackCount);
-				lookBackList.add(0, t);
-
-				// constructor call is to copy lookBackList
-				this.addToken(new ArrayList<>(lookBackList), tokens.get(wordIndex + 1));
-
-				// if lookback hits delimiter token, stop
-				if (t == delimitToken) {
-					break chunkLoop;
-				}
-			}
-		}
-		log.info("\n");
-	}
-
-	public void addToken(List<Token> prev, Token next) {
+	/**
+	 * Adds a reference between the {@link LookbackContainer} and the
+	 * {@link Token}
+	 * 
+	 * @param lbc
+	 * @param next
+	 */
+	public void addToken(LookbackContainer<T> lbc, Token next) {
 		Map<Token, Integer> nextElementMap = null;
-		LookbackContainer<T> lbc = new LookbackContainer<T>(prev);
 		if (tokenMap.containsKey(lbc)) {
 			nextElementMap = tokenMap.get(lbc);
 		} else {
@@ -88,12 +51,8 @@ public class TokenHolder<T> {
 
 	}
 
-	public DelimitToken getDelimitToken() {
-		return delimitToken;
-	}
-
 	/**
-	 * Returns the next token given the LookbackContainer
+	 * Returns the next token given the LookbackContainer.
 	 * 
 	 * @param look
 	 * @return
@@ -107,8 +66,9 @@ public class TokenHolder<T> {
 			look = look.shrinkContainer();
 		}
 
-		if (nextElementList == null)
-			return null;
+		if (nextElementList == null) {
+			throw new RuntimeException("Unable to find match to given input");
+		}
 
 		int sum = 0;
 		// calculate sum
@@ -123,9 +83,11 @@ public class TokenHolder<T> {
 			}
 			randInt -= entry.getValue();
 		}
-		return null;
+
+		throw new RuntimeException("Failed to get next token");
 	}
 
+	
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();

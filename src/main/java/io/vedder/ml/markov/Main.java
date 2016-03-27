@@ -35,10 +35,10 @@ public class Main {
 		}
 
 		log.info("Starting TokenHolder creation...\n");
-		TokenHolder<String> tokenHolder = new TokenHolder<>(lookback, mapInitialSize);
+		TokenHolder<String> tokenHolder = new TokenHolder<>(mapInitialSize);
 		
 		log.info("Starting FileTokenizer creation...\n");
-		FileTokenizer fileTokenizer = new FileTokenizer(tokenHolder, filePath);
+		FileTokenizer fileTokenizer = new FileTokenizer(tokenHolder, lookback, filePath);
 		
 		log.info("Starting token adds...\n");
 		fileTokenizer.addTokensToHolder();

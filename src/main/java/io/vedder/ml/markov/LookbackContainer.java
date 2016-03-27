@@ -1,7 +1,7 @@
 package io.vedder.ml.markov;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -15,7 +15,7 @@ public class LookbackContainer<T> {
 	}
 
 	public LookbackContainer(List<Token> ts) {
-		tokenList = ts;
+		tokenList = new ArrayList<>(ts);
 	}
 
 	/**
