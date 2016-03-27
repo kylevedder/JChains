@@ -10,11 +10,14 @@ import io.vedder.ml.markov.tokens.Token;
 public class LookbackContainer<T> {
 	private List<Token> tokenList = null;
 
-	public LookbackContainer(Token ts) {
-		tokenList = new LinkedList<>(Arrays.asList(ts));
+	private final int MAX_SIZE;
+
+	public LookbackContainer(int maxSize, Token ts) {
+		this(maxSize, Arrays.asList(ts));
 	}
 
-	public LookbackContainer(List<Token> ts) {
+	public LookbackContainer(int maxSize, List<Token> ts) {
+		MAX_SIZE = maxSize;
 		tokenList = new ArrayList<>(ts);
 	}
 
@@ -24,13 +27,13 @@ public class LookbackContainer<T> {
 	 * @param token
 	 * @param maxSize
 	 */
-	public void addToken(Token token, int maxSize) {
+	public void addToken(Token token) {
 		if (tokenList == null) {
 			tokenList = new LinkedList<>();
 		}
 
-		if (tokenList.size() >= maxSize) {
-			tokenList = tokenList.subList(tokenList.size() - maxSize + 1, tokenList.size());
+		if (tokenList.size() >= MAX_SIZE) {
+			tokenList = tokenList.subList(tokenList.size() - MAX_SIZE + 1, tokenList.size());
 		}
 		tokenList.add(token);
 	}
@@ -49,7 +52,7 @@ public class LookbackContainer<T> {
 		if (!lst.isEmpty()) {
 			lst.remove(0);
 		}
-		return new LookbackContainer<T>(lst);
+		return new LookbackContainer<T>(MAX_SIZE - 1, lst);
 	}
 
 	@Override

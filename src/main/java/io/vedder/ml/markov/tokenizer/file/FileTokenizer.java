@@ -66,7 +66,7 @@ public class FileTokenizer extends Tokenizer<String> {
 				lookBackList.add(0, t);
 
 				// constructor call is to copy lookBackList
-				th.addToken(new LookbackContainer<>(lookBackList), tokens.get(wordIndex + 1));
+				th.addToken(new LookbackContainer<>(this.LOOKBACK, lookBackList), tokens.get(wordIndex + 1));
 
 				// if lookback hits delimiter token, stop
 				if (t == DELIMIT_TOKEN) {
@@ -109,11 +109,11 @@ public class FileTokenizer extends Tokenizer<String> {
 	public List<Token> generateTokenList() {
 		List<Token> line = new ArrayList<>(100);
 
-		LookbackContainer<String> c = new LookbackContainer<>(DELIMIT_TOKEN);
+		LookbackContainer<String> c = new LookbackContainer<>(LOOKBACK, DELIMIT_TOKEN);
 		Token t = null;
 		while ((t = th.getNext(c)) != DELIMIT_TOKEN) {
 			line.add(t);
-			c.addToken(t, LOOKBACK);
+			c.addToken(t);
 		}
 		return line;
 	}
