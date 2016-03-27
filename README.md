@@ -25,6 +25,7 @@ These are a few examples of implementations.
 ```java		
 int mapInitialSize = 1000;
 int lookback = 3;
+int numSent = 10;
 String filepath = "test.txt"
 
 TokenHolder<String> tokenHolder = new MapTokenHolder<>(mapInitialSize);
