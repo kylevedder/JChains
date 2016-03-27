@@ -1,4 +1,4 @@
-package io.vedder.ml.markov.tokenizer;
+package io.vedder.ml.markov.tokenizer.file;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -12,10 +12,11 @@ import org.apache.log4j.Logger;
 
 import io.vedder.ml.markov.LookbackContainer;
 import io.vedder.ml.markov.Main;
-import io.vedder.ml.markov.TokenHolder;
-import io.vedder.ml.markov.tokens.DelimitToken;
-import io.vedder.ml.markov.tokens.StringToken;
+import io.vedder.ml.markov.holder.TokenHolder;
+import io.vedder.ml.markov.tokenizer.Tokenizer;
 import io.vedder.ml.markov.tokens.Token;
+import io.vedder.ml.markov.tokens.file.DelimitToken;
+import io.vedder.ml.markov.tokens.file.StringToken;
 import io.vedder.ml.markov.utils.Utils;
 
 public class FileTokenizer extends Tokenizer<String> {
@@ -28,16 +29,15 @@ public class FileTokenizer extends Tokenizer<String> {
 
 	private final List<String> listStrings;
 
-	
 	public FileTokenizer(TokenHolder<String> th, int lookback, String filePath) {
 		super(th);
 		END_MARKS = new HashSet<>(Arrays.asList(".", "?", "!"));
 		LOOKBACK = lookback;
 		this.listStrings = splitStrings(Utils.readFile(filePath));
+		addTokensToHolder();
 	}
 
-	@Override
-	public void addTokensToHolder() {
+	private void addTokensToHolder() {
 		List<Token> l = getTokens(this.listStrings);
 		if (Main.verbose)
 			System.out.println("Adding Tokens...");
@@ -106,20 +106,16 @@ public class FileTokenizer extends Tokenizer<String> {
 	}
 
 	@Override
-	public List<List<Token>> generateTokenLists(int numLists) {
-		List<List<Token>> lines = new LinkedList<>();
-		for (int i = 0; i < numLists; i++) {
-			List<Token> line = new ArrayList<>(100);
+	public List<Token> generateTokenList() {
+		List<Token> line = new ArrayList<>(100);
 
-			LookbackContainer<String> c = new LookbackContainer<>(DELIMIT_TOKEN);
-			Token t = null;
-			while ((t = th.getNext(c)) != DELIMIT_TOKEN) {
-				line.add(t);
-				c.addToken(t, LOOKBACK);
-			}
-			lines.add(line);
+		LookbackContainer<String> c = new LookbackContainer<>(DELIMIT_TOKEN);
+		Token t = null;
+		while ((t = th.getNext(c)) != DELIMIT_TOKEN) {
+			line.add(t);
+			c.addToken(t, LOOKBACK);
 		}
-		return lines;
+		return line;
 	}
 
 	@Override

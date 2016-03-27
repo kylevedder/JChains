@@ -1,13 +1,16 @@
 package io.vedder.ml.markov;
 
 import java.util.Arrays;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
-import io.vedder.ml.markov.tokenizer.FileTokenizer;
+import io.vedder.ml.markov.holder.MapTokenHolder;
+import io.vedder.ml.markov.holder.TokenHolder;
+import io.vedder.ml.markov.tokenizer.file.FileTokenizer;
 import io.vedder.ml.markov.tokens.Token;
 
 public class Main {
@@ -26,7 +29,7 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-//		args = new String[] { "-v", "-i", "50000", "2", "10", "inputs/AllsWellThatEndsWell.txt" };
+		args = new String[] { "-v", "-i", "50000", "2", "10", "inputs/BibleShort.txt" };
 
 		parseArgs(Arrays.asList(args));
 
@@ -35,17 +38,17 @@ public class Main {
 		}
 
 		log.info("Starting TokenHolder creation...\n");
-		TokenHolder<String> tokenHolder = new TokenHolder<>(mapInitialSize);
-		
+		TokenHolder<String> tokenHolder = new MapTokenHolder<>(mapInitialSize);
+
 		log.info("Starting FileTokenizer creation...\n");
 		FileTokenizer fileTokenizer = new FileTokenizer(tokenHolder, lookback, filePath);
-		
-		log.info("Starting token adds...\n");
-		fileTokenizer.addTokensToHolder();
 
 		log.info("Generating Token Lists...\n");
-		List<List<Token>> tokensLists = fileTokenizer.generateTokenLists(numSent);
-		
+		List<List<Token>> tokensLists = new LinkedList<>();
+		for (int i = 0; i < numSent; i++) {
+			tokensLists.add(fileTokenizer.generateTokenList());
+		}
+
 		log.info("Printing Tokens...\n" + "===============\n");
 		tokensLists.forEach(l -> fileTokenizer.outputTokens(l));
 
@@ -78,7 +81,7 @@ public class Main {
 
 		lookback = Integer.parseInt(lookbackString);
 		numSent = Integer.parseInt(numSentString);
-		filePath = filepathString;			
+		filePath = filepathString;
 	}
 
 	private static void printUsageAndExit() {

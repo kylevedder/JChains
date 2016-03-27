@@ -1,5 +1,13 @@
-package io.vedder.ml.markov.tokens;
+package io.vedder.ml.markov.tokens.file;
 
+import io.vedder.ml.markov.tokens.Token;
+
+/**
+ * Token for delimiting the start and end of sentences.
+ * 
+ * @author kyle
+ *
+ */
 public class DelimitToken extends Token {
 	private static final String TOKEN_STRING = "<DELIMIT TOKEN>";
 

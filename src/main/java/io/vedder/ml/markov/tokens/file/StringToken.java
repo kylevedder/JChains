@@ -1,13 +1,21 @@
-package io.vedder.ml.markov.tokens;
+package io.vedder.ml.markov.tokens.file;
 
+import io.vedder.ml.markov.tokens.Token;
+
+/**
+ * Token for representing a single word.
+ * 
+ * @author kyle
+ *
+ */
 public class StringToken extends Token {
 
 	private final String data;
-	
+
 	public StringToken(String data) {
 		this.data = data;
-	}	
-	
+	}
+
 	@Override
 	public int hashCode() {
 		final int prime = 31;

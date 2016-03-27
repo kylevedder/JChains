@@ -1,4 +1,4 @@
-package io.vedder.ml.markov;
+package io.vedder.ml.markov.holder;
 
 import java.util.Collections;
 import java.util.HashMap;
@@ -8,31 +8,19 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
 
+import io.vedder.ml.markov.LookbackContainer;
 import io.vedder.ml.markov.tokens.Token;
 
-public class TokenHolder<T> {
-	
+public class MapTokenHolder<T> implements TokenHolder<T> {
 
 	private Map<LookbackContainer<T>, Map<Token, Integer>> tokenMap;
 	private Random r = null;
 
-	/**
-	 * Data structure for storing and retrieving {@link LookbackContainer}s and Tokens.
-	 * @param mapInitialSize
-	 */
-	public TokenHolder(int mapInitialSize) {
+	public MapTokenHolder(int mapInitialSize) {
 		r = new Random();
 		tokenMap = new HashMap<>(mapInitialSize);
 	}
 
-
-	/**
-	 * Adds a reference between the {@link LookbackContainer} and the
-	 * {@link Token}
-	 * 
-	 * @param lbc
-	 * @param next
-	 */
 	public void addToken(LookbackContainer<T> lbc, Token next) {
 		Map<Token, Integer> nextElementMap = null;
 		if (tokenMap.containsKey(lbc)) {
@@ -51,12 +39,6 @@ public class TokenHolder<T> {
 
 	}
 
-	/**
-	 * Returns the next token given the LookbackContainer.
-	 * 
-	 * @param look
-	 * @return
-	 */
 	public Token getNext(LookbackContainer<T> look) {
 		Map<Token, Integer> nextElementList = null;
 
@@ -87,7 +69,6 @@ public class TokenHolder<T> {
 		throw new RuntimeException("Failed to get next token");
 	}
 
-	
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
