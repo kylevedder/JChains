@@ -29,7 +29,7 @@ public class ExampleMain {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-//		args = new String[] { "-v", "-i", "50000", "2", "10", "inputs/BibleShort.txt" };
+		args = new String[] { "-v", "-i", "50000", "3", "10", "inputs/BibleShort.txt" };
 
 		parseArgs(Arrays.asList(args));
 

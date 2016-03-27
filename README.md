@@ -16,9 +16,11 @@ Run `mvn clean package` to compile the project into a runnable fat jar. This jar
 
 ##Examples
 
-These are a few examples of implementations.
+These are a few examples of implementations provided along with the JChains library.
 
 ####Sentence Generator
+
+This sentence generator is a word based absorbing Markov chain with an arbitrary lookback. 
 
 **Source**
 
