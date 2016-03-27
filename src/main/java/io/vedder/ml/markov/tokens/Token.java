@@ -10,10 +10,14 @@ package io.vedder.ml.markov.tokens;
  */
 public abstract class Token {
 
-	@Override
+	/**
+	 * Two {@link Token}s with the same internal data will have the same hash code. 
+	 */
 	public abstract int hashCode();
 
-	@Override
+	/**
+	 * Two {@link Token}s with the same internal data will be equal. 
+	 */
 	public abstract boolean equals(Object obj);
 
 }

@@ -11,6 +11,13 @@ import java.util.Random;
 import io.vedder.ml.markov.LookbackContainer;
 import io.vedder.ml.markov.tokens.Token;
 
+/**
+ * HashMap based implementation of {@link TokenHolder}.
+ * 
+ * @author kyle
+ *
+ * @param <T>
+ */
 public class MapTokenHolder<T> implements TokenHolder<T> {
 
 	private Map<LookbackContainer<T>, Map<Token, Integer>> tokenMap;
@@ -36,7 +43,6 @@ public class MapTokenHolder<T> implements TokenHolder<T> {
 			nextElementMap.put(next, 1);
 		}
 		tokenMap.put(lbc, nextElementMap);
-
 	}
 
 	public Token getNext(LookbackContainer<T> look) {

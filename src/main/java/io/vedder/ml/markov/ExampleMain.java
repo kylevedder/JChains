@@ -13,9 +13,9 @@ import io.vedder.ml.markov.holder.TokenHolder;
 import io.vedder.ml.markov.tokenizer.file.FileTokenizer;
 import io.vedder.ml.markov.tokens.Token;
 
-public class Main {
+public class ExampleMain {
 
-	static Logger log = Logger.getLogger(Main.class.getName());
+	static Logger log = Logger.getLogger(ExampleMain.class.getName());
 	public static boolean verbose = false;
 
 	private static int lookback = 1;
@@ -29,7 +29,7 @@ public class Main {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		args = new String[] { "-v", "-i", "50000", "2", "10", "inputs/BibleShort.txt" };
+//		args = new String[] { "-v", "-i", "50000", "2", "10", "inputs/BibleShort.txt" };
 
 		parseArgs(Arrays.asList(args));
 

@@ -11,7 +11,7 @@ import java.util.stream.Collectors;
 import org.apache.log4j.Logger;
 
 import io.vedder.ml.markov.LookbackContainer;
-import io.vedder.ml.markov.Main;
+import io.vedder.ml.markov.ExampleMain;
 import io.vedder.ml.markov.holder.TokenHolder;
 import io.vedder.ml.markov.tokenizer.Tokenizer;
 import io.vedder.ml.markov.tokens.Token;
@@ -19,9 +19,15 @@ import io.vedder.ml.markov.tokens.file.DelimitToken;
 import io.vedder.ml.markov.tokens.file.StringToken;
 import io.vedder.ml.markov.utils.Utils;
 
+/**
+ * Implementation of the {@link Tokenizer} for text files.
+ * 
+ * @author kyle
+ *
+ */
 public class FileTokenizer extends Tokenizer<String> {
 
-	static Logger log = Logger.getLogger(Main.class.getName());
+	static Logger log = Logger.getLogger(ExampleMain.class.getName());
 
 	private final int LOOKBACK;
 	private final Set<String> END_MARKS;
@@ -39,7 +45,7 @@ public class FileTokenizer extends Tokenizer<String> {
 
 	private void addTokensToHolder() {
 		List<Token> l = getTokens(this.listStrings);
-		if (Main.verbose)
+		if (ExampleMain.verbose)
 			System.out.println("Adding Tokens...");
 		addTokenList(l);
 	}
