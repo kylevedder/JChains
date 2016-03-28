@@ -58,12 +58,6 @@ public class FileTokenizer extends Tokenizer {
 		log.info("Chunking " + tokens.size() + " tokens for file \""+ filePath +"\"...\n");
 		for (int wordIndex = LOOKBACK; wordIndex < tokens.size() - 1; wordIndex++) {
 
-//			if (wordIndex % 1000 == 0) {
-//				log.info(".");
-//			}
-//			if (wordIndex % 10000 == 0) {
-//				log.info(String.format("|%7d\n", wordIndex));
-//			}
 			// List for the lookback
 			List<Token> lookBackList = new ArrayList<>(this.LOOKBACK);
 
@@ -84,7 +78,6 @@ public class FileTokenizer extends Tokenizer {
 				}
 			}
 		}
-//		log.info("\n");
 	}
 
 	private List<Token> getTokens(List<String> listStrings) {
@@ -114,31 +107,4 @@ public class FileTokenizer extends Tokenizer {
 				.flatMap(l -> l.stream()).filter(w -> !w.isEmpty() && !w.equals("")).collect(Collectors.toList());
 		return splits;
 	}
-
-	// @Override
-	// public List<Token> generateTokenList() {
-	// List<Token> line = new ArrayList<>(100);
-	//
-	// LookbackContainer c = new LookbackContainer(LOOKBACK, DELIMIT_TOKEN);
-	// Token t = null;
-	// while ((t = th.getNext(c)) != DELIMIT_TOKEN) {
-	// line.add(t);
-	// c.addToken(t);
-	// }
-	// return line;
-	// }
-	//
-	// @Override
-	// public void outputTokens(List<Token> tokens) {
-	// List<String> punctuation = Arrays.asList(",", ";", ":", ".", "?", "!",
-	// "-");
-	// tokens.forEach(w -> {
-	// if (!punctuation.contains(w.toString())) {
-	// System.out.print(" ");
-	// }
-	// System.out.print(w.toString());
-	// });
-	// System.out.print("\n");
-	// }
-
 }
