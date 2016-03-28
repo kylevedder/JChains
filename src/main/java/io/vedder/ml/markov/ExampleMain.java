@@ -43,32 +43,34 @@ public class ExampleMain {
 			log.setLevel(Level.WARN);
 		}
 
-		log.info("Starting TokenHolder creation...\n");
+		//Data structure to hold tokens
 		TokenHolder tokenHolder = new MapTokenHolder(mapInitialSize);
 
-		log.info("Starting FileTokenizer creation...\n");
+		//Fills the TokenHolder with tokens
 		FileTokenizer fileTokenizer = new FileTokenizer(tokenHolder, lookback, filePath);
 		
+		//Uses the TokenHolder to generate Collections of tokens.
 		Generator g = new FileGenerator(tokenHolder, lookback);
 		
+		//Takes Collections of tokens and consumes them
 		TokenConsumer tc = new FileTokenConsumer();		
 		
+		//Kicks off the tokenization process
 		fileTokenizer.tokenize();
-
-		log.info("Generating Token Lists...\n");
-		List<Collection<Token>> tokensCollections = new LinkedList<>();		
-
 		
-		for (int i = 0; i < numSent; i++) {
+		List<Collection<Token>> tokensCollections = new LinkedList<>();		
+		
+		//Creates Lists of tokens
+		for (int i = 0; i < numSent/2; i++) {
 			tokensCollections.add(g.generateTokenList());
 		}
 		
-		
-		for (int i = 0; i < numSent; i++) {
+		//Creates lazy collections of tokens
+		for (int i = 0; i < (numSent/2 + numSent % 2); i++) {
 			tokensCollections.add( g.generateLazyTokenList());
 		}
 		
-
+		//Consumer consumes both types of collections
 		log.info("Printing Tokens...\n" + "===============\n");
 		tokensCollections.forEach(l -> tc.consume(l));
 
