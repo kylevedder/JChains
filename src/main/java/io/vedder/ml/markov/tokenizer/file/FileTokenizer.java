@@ -41,10 +41,8 @@ public class FileTokenizer extends Tokenizer {
 		END_MARKS = new HashSet<>(Arrays.asList(".", "?", "!"));
 		LOOKBACK = lookback;
 		this.filePath = filePath;
-		
 	}
-	
-	
+
 	@Override
 	public void tokenize() {
 		this.listStrings = splitStrings(Utils.readFile(filePath));
@@ -53,21 +51,19 @@ public class FileTokenizer extends Tokenizer {
 
 	private void addTokensToHolder() {
 		List<Token> l = getTokens(this.listStrings);
-		if (ExampleMain.verbose)
-			System.out.println("Adding Tokens...");
 		addTokenList(l);
 	}
 
 	private void addTokenList(List<Token> tokens) {
-		log.info("Chunking " + tokens.size() + " tokens...\n");
+		log.info("Chunking " + tokens.size() + " tokens for file \""+ filePath +"\"...\n");
 		for (int wordIndex = LOOKBACK; wordIndex < tokens.size() - 1; wordIndex++) {
 
-			if (wordIndex % 1000 == 0) {
-				log.info(".");
-			}
-			if (wordIndex % 10000 == 0) {
-				log.info(String.format("|%7d\n", wordIndex));
-			}
+//			if (wordIndex % 1000 == 0) {
+//				log.info(".");
+//			}
+//			if (wordIndex % 10000 == 0) {
+//				log.info(String.format("|%7d\n", wordIndex));
+//			}
 			// List for the lookback
 			List<Token> lookBackList = new ArrayList<>(this.LOOKBACK);
 
@@ -88,7 +84,7 @@ public class FileTokenizer extends Tokenizer {
 				}
 			}
 		}
-		log.info("\n");
+//		log.info("\n");
 	}
 
 	private List<Token> getTokens(List<String> listStrings) {
@@ -119,29 +115,30 @@ public class FileTokenizer extends Tokenizer {
 		return splits;
 	}
 
-//	@Override
-//	public List<Token> generateTokenList() {
-//		List<Token> line = new ArrayList<>(100);
-//
-//		LookbackContainer c = new LookbackContainer(LOOKBACK, DELIMIT_TOKEN);
-//		Token t = null;
-//		while ((t = th.getNext(c)) != DELIMIT_TOKEN) {
-//			line.add(t);
-//			c.addToken(t);
-//		}
-//		return line;
-//	}
-//
-//	@Override
-//	public void outputTokens(List<Token> tokens) {
-//		List<String> punctuation = Arrays.asList(",", ";", ":", ".", "?", "!", "-");
-//		tokens.forEach(w -> {
-//			if (!punctuation.contains(w.toString())) {
-//				System.out.print(" ");
-//			}
-//			System.out.print(w.toString());
-//		});
-//		System.out.print("\n");
-//	}
+	// @Override
+	// public List<Token> generateTokenList() {
+	// List<Token> line = new ArrayList<>(100);
+	//
+	// LookbackContainer c = new LookbackContainer(LOOKBACK, DELIMIT_TOKEN);
+	// Token t = null;
+	// while ((t = th.getNext(c)) != DELIMIT_TOKEN) {
+	// line.add(t);
+	// c.addToken(t);
+	// }
+	// return line;
+	// }
+	//
+	// @Override
+	// public void outputTokens(List<Token> tokens) {
+	// List<String> punctuation = Arrays.asList(",", ";", ":", ".", "?", "!",
+	// "-");
+	// tokens.forEach(w -> {
+	// if (!punctuation.contains(w.toString())) {
+	// System.out.print(" ");
+	// }
+	// System.out.print(w.toString());
+	// });
+	// System.out.print("\n");
+	// }
 
 }

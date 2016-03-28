@@ -15,6 +15,7 @@ import io.vedder.ml.markov.generator.Generator;
 import io.vedder.ml.markov.generator.file.FileGenerator;
 import io.vedder.ml.markov.holder.MapTokenHolder;
 import io.vedder.ml.markov.holder.TokenHolder;
+import io.vedder.ml.markov.threading.JobManager;
 import io.vedder.ml.markov.tokenizer.file.FileTokenizer;
 import io.vedder.ml.markov.tokens.Token;
 
@@ -26,7 +27,7 @@ public class ExampleMain {
 	private static int lookback = 1;
 	private static int mapInitialSize = 10000;
 	private static int numSent = 1;
-	private static String filePath = "";
+	private static List<String> filePaths = null;
 
 	/**
 	 * Example use of the Markov Chain library.
@@ -34,7 +35,7 @@ public class ExampleMain {
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		args = new String[] { "-v", "-i", "50000", "3", "10", "inputs/shakespear.txt" };
+		args = new String[] { "-v", "-i", "50000", "3", "10", "-f","inputs/shakespear.txt", "inputs/AllsWellThatEndsWell.txt" };
 
 		parseArgs(Arrays.asList(args));
 
@@ -42,34 +43,40 @@ public class ExampleMain {
 			log.setLevel(Level.WARN);
 		}
 
-		//Data structure to hold tokens
+		// Data structure to hold tokens
 		TokenHolder tokenHolder = new MapTokenHolder(mapInitialSize);
+		
+		JobManager jm = new JobManager();
 
-		//Fills the TokenHolder with tokens
-		FileTokenizer fileTokenizer = new FileTokenizer(tokenHolder, lookback, filePath);
+		// Fills the TokenHolder with tokens
+		for (String filePath : filePaths) {
+			FileTokenizer fileTokenizer = new FileTokenizer(tokenHolder, lookback, filePath);
+			jm.addTokenizer(fileTokenizer);
+		}
 		
-		//Uses the TokenHolder to generate Collections of tokens.
+		jm.runAll();
+
+		// Uses the TokenHolder to generate Collections of tokens.
 		Generator g = new FileGenerator(tokenHolder, lookback);
-		
-		//Takes Collections of tokens and consumes them
-		TokenConsumer tc = new FileTokenConsumer();		
-		
-		//Kicks off the tokenization process
-		fileTokenizer.tokenize();
-		
-		List<Collection<Token>> tokensCollections = new LinkedList<>();		
-		
-		//Creates Lists of tokens
-		for (int i = 0; i < numSent/2; i++) {
+
+		// Takes Collections of tokens and consumes them
+		TokenConsumer tc = new FileTokenConsumer();
+
+		// Kicks off the tokenization process
+
+		List<Collection<Token>> tokensCollections = new LinkedList<>();
+
+		// Creates Lists of tokens
+		for (int i = 0; i < numSent / 2; i++) {
 			tokensCollections.add(g.generateTokenList());
 		}
-		
-		//Creates lazy collections of tokens
-		for (int i = 0; i < (numSent/2 + numSent % 2); i++) {
-			tokensCollections.add( g.generateLazyTokenList());
+
+		// Creates lazy collections of tokens
+		for (int i = 0; i < (numSent / 2 + numSent % 2); i++) {
+			tokensCollections.add(g.generateLazyTokenList());
 		}
-		
-		//Consumer consumes both types of collections
+
+		// Consumer consumes both types of collections
 		log.info("Printing Tokens...\n" + "===============\n");
 		tokensCollections.forEach(l -> tc.consume(l));
 
@@ -81,7 +88,7 @@ public class ExampleMain {
 	 * @param args
 	 */
 	private static void parseArgs(List<String> args) {
-		if (args.size() < 3) {
+		if (args.size() < 3 || !args.contains("-f")) {
 			printUsageAndExit();
 		}
 
@@ -96,17 +103,19 @@ public class ExampleMain {
 			mapInitialSize = Integer.parseInt(args.get(index + 1));
 		}
 
-		String lookbackString = args.get(args.size() - 3);
-		String numSentString = args.get(args.size() - 2);
-		String filepathString = args.get(args.size() - 1);
+		int dashFIndex = args.indexOf("-f");
+
+		String lookbackString = args.get(dashFIndex - 2);
+		String numSentString = args.get(dashFIndex - 1);
+		List<String> filePathStrings = args.subList(dashFIndex+1, args.size());
 
 		lookback = Integer.parseInt(lookbackString);
 		numSent = Integer.parseInt(numSentString);
-		filePath = filepathString;
+		filePaths = filePathStrings;
 	}
 
 	private static void printUsageAndExit() {
-		System.out.println("ARGS: [-v] [-i (map initial size)] <lookback> <number of sentences> <input file>");
+		System.out.println("ARGS: [-v] [-i (map initial size)] <lookback> <number of sentences> [-f <input files>]");
 		System.exit(-1);
 	}
 }
