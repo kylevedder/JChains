@@ -19,17 +19,17 @@ import io.vedder.ml.markov.tokens.Token;
  *
  * @param <T>
  */
-public class MapTokenHolder<T> implements TokenHolder<T> {
+public class MapTokenHolder implements TokenHolder {
 
-	private Map<LookbackContainer<T>, Map<Token, Integer>> tokenMap;
+	private Map<LookbackContainer, Map<Token, Integer>> tokenMap;
 	private Random r = null;
 
 	public MapTokenHolder(int mapInitialSize) {
-		r = new Random();		
+		r = new Random();
 		tokenMap = new ConcurrentHashMap<>(mapInitialSize);
 	}
 
-	public void addToken(LookbackContainer<T> lbc, Token next) {
+	public void addToken(LookbackContainer lbc, Token next) {
 		Map<Token, Integer> nextElementMap = null;
 		if (tokenMap.containsKey(lbc)) {
 			nextElementMap = tokenMap.get(lbc);
@@ -46,7 +46,7 @@ public class MapTokenHolder<T> implements TokenHolder<T> {
 		tokenMap.put(lbc, nextElementMap);
 	}
 
-	public Token getNext(LookbackContainer<T> look) {
+	public Token getNext(LookbackContainer look) {
 		Map<Token, Integer> nextElementList = null;
 
 		// Look for the largest lookback container which has a match. May be
@@ -80,7 +80,7 @@ public class MapTokenHolder<T> implements TokenHolder<T> {
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
 		List<String> lst = new LinkedList<>();
-		for (Entry<LookbackContainer<T>, Map<Token, Integer>> e : tokenMap.entrySet()) {
+		for (Entry<LookbackContainer, Map<Token, Integer>> e : tokenMap.entrySet()) {
 			lst.add(e.toString() + "\n");
 
 		}

@@ -9,19 +9,19 @@ import io.vedder.ml.markov.tokens.Token;
  * 
  * Different TokenHolders have different performance characteristics.
  */
-public interface TokenHolder<T> {
+public interface TokenHolder {
 	
 	/**
 	 * Adds an edge between the given {@link LookbackContainer} and the given {@link Token}.
 	 * @param lbc
 	 * @param next
 	 */
-	public void addToken(LookbackContainer<T> lbc, Token next);
+	public void addToken(LookbackContainer lbc, Token next);
 	
 	/**
 	 * Selects the next best {@link Token} from the given {@link LookbackContainer}.
 	 * @param look
 	 * @return
 	 */
-	public Token getNext(LookbackContainer<T> look);
+	public Token getNext(LookbackContainer look);
 }

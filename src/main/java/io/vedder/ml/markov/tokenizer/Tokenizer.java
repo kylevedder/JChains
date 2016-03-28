@@ -12,11 +12,11 @@ import io.vedder.ml.markov.tokens.Token;
  *
  * @param <T>
  */
-public abstract class Tokenizer<T> {
+public abstract class Tokenizer {
 
-	protected final TokenHolder<T> th;
+	protected final TokenHolder th;
 
-	public Tokenizer(TokenHolder<T> th) {
+	public Tokenizer(TokenHolder th) {
 		this.th = th;
 	}
 

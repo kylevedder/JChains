@@ -38,7 +38,7 @@ public class ExampleMain {
 		}
 
 		log.info("Starting TokenHolder creation...\n");
-		TokenHolder<String> tokenHolder = new MapTokenHolder<>(mapInitialSize);
+		TokenHolder tokenHolder = new MapTokenHolder(mapInitialSize);
 
 		log.info("Starting FileTokenizer creation...\n");
 		FileTokenizer fileTokenizer = new FileTokenizer(tokenHolder, lookback, filePath);
