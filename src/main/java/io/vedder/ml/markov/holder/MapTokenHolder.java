@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Random;
+import java.util.concurrent.ConcurrentHashMap;
 
 import io.vedder.ml.markov.LookbackContainer;
 import io.vedder.ml.markov.tokens.Token;
@@ -24,8 +25,8 @@ public class MapTokenHolder<T> implements TokenHolder<T> {
 	private Random r = null;
 
 	public MapTokenHolder(int mapInitialSize) {
-		r = new Random();
-		tokenMap = new HashMap<>(mapInitialSize);
+		r = new Random();		
+		tokenMap = new ConcurrentHashMap<>(mapInitialSize);
 	}
 
 	public void addToken(LookbackContainer<T> lbc, Token next) {
