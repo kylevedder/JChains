@@ -9,9 +9,8 @@ import java.util.stream.Collectors;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 
-import io.vedder.ml.markov.collection.TokenCollection;
-import io.vedder.ml.markov.consumer.FileTokenConsumer;
 import io.vedder.ml.markov.consumer.TokenConsumer;
+import io.vedder.ml.markov.consumer.file.FileTokenConsumer;
 import io.vedder.ml.markov.generator.Generator;
 import io.vedder.ml.markov.generator.file.FileGenerator;
 import io.vedder.ml.markov.holder.MapTokenHolder;

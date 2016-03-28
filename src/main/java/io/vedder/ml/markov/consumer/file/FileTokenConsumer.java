@@ -1,9 +1,10 @@
-package io.vedder.ml.markov.consumer;
+package io.vedder.ml.markov.consumer.file;
 
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
+import io.vedder.ml.markov.consumer.TokenConsumer;
 import io.vedder.ml.markov.tokens.Token;
 
 public class FileTokenConsumer extends TokenConsumer {
