@@ -31,14 +31,22 @@ public class FileTokenizer extends Tokenizer {
 
 	private final int LOOKBACK;
 	private final Set<String> END_MARKS;
-	private final DelimitToken DELIMIT_TOKEN = DelimitToken.getInstance();
+	private final Token DELIMIT_TOKEN = DelimitToken.getInstance();
+	private final String filePath;
 
-	private final List<String> listStrings;
+	private List<String> listStrings = null;
 
 	public FileTokenizer(TokenHolder th, int lookback, String filePath) {
 		super(th);
 		END_MARKS = new HashSet<>(Arrays.asList(".", "?", "!"));
 		LOOKBACK = lookback;
+		this.filePath = filePath;
+		
+	}
+	
+	
+	@Override
+	public void tokenize() {
 		this.listStrings = splitStrings(Utils.readFile(filePath));
 		addTokensToHolder();
 	}
@@ -111,29 +119,29 @@ public class FileTokenizer extends Tokenizer {
 		return splits;
 	}
 
-	@Override
-	public List<Token> generateTokenList() {
-		List<Token> line = new ArrayList<>(100);
-
-		LookbackContainer c = new LookbackContainer(LOOKBACK, DELIMIT_TOKEN);
-		Token t = null;
-		while ((t = th.getNext(c)) != DELIMIT_TOKEN) {
-			line.add(t);
-			c.addToken(t);
-		}
-		return line;
-	}
-
-	@Override
-	public void outputTokens(List<Token> tokens) {
-		List<String> punctuation = Arrays.asList(",", ";", ":", ".", "?", "!", "-");
-		tokens.forEach(w -> {
-			if (!punctuation.contains(w.toString())) {
-				System.out.print(" ");
-			}
-			System.out.print(w.toString());
-		});
-		System.out.print("\n");
-	}
+//	@Override
+//	public List<Token> generateTokenList() {
+//		List<Token> line = new ArrayList<>(100);
+//
+//		LookbackContainer c = new LookbackContainer(LOOKBACK, DELIMIT_TOKEN);
+//		Token t = null;
+//		while ((t = th.getNext(c)) != DELIMIT_TOKEN) {
+//			line.add(t);
+//			c.addToken(t);
+//		}
+//		return line;
+//	}
+//
+//	@Override
+//	public void outputTokens(List<Token> tokens) {
+//		List<String> punctuation = Arrays.asList(",", ";", ":", ".", "?", "!", "-");
+//		tokens.forEach(w -> {
+//			if (!punctuation.contains(w.toString())) {
+//				System.out.print(" ");
+//			}
+//			System.out.print(w.toString());
+//		});
+//		System.out.print("\n");
+//	}
 
 }

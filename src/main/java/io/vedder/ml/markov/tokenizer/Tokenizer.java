@@ -1,9 +1,6 @@
 package io.vedder.ml.markov.tokenizer;
 
-import java.util.List;
-
 import io.vedder.ml.markov.holder.TokenHolder;
-import io.vedder.ml.markov.tokens.Token;
 
 /**
  * Base class for all Tokenizers. Provides basic access to TokenHolders.
@@ -19,8 +16,10 @@ public abstract class Tokenizer {
 	public Tokenizer(TokenHolder th) {
 		this.th = th;
 	}
+	
+	public abstract void tokenize();
 
-	public abstract List<Token> generateTokenList();
-
-	public abstract void outputTokens(List<Token> tokens);
+//	public abstract List<Token> generateTokenList();
+//
+//	public abstract void outputTokens(List<Token> tokens);
 }
