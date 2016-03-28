@@ -22,32 +22,6 @@ These are a few examples of implementations provided along with the JChains libr
 
 This sentence generator is a word based absorbing Markov chain with an arbitrary lookback. 
 
-**Source**
-
-```java		
-int mapInitialSize = 1000;
-int lookback = 3;
-int numSent = 10;
-String filepath = "test.txt"
-
-TokenHolder<String> tokenHolder = new MapTokenHolder<>(mapInitialSize);
-
-log.info("Starting FileTokenizer creation...\n");
-FileTokenizer fileTokenizer = new FileTokenizer(tokenHolder, lookback, filePath);
-
-log.info("Generating Token Lists...\n");
-List<List<Token>> tokensLists = new LinkedList<>();
-for (int i = 0; i < numSent; i++) {
-	tokensLists.add(fileTokenizer.generateTokenList());
-}
-
-log.info("Printing Tokens...\n" + "===============\n");
-tokensLists.forEach(l -> fileTokenizer.outputTokens(l));
-
-```	
- 
-
-
 **Outputs**
 
 
