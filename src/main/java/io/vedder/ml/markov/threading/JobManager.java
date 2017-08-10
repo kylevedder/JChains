@@ -5,12 +5,11 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import io.vedder.ml.markov.ExampleMain;
 import io.vedder.ml.markov.tokenizer.Tokenizer;
 
 public class JobManager {
 
-	static Logger log = Logger.getLogger(ExampleMain.class.getName());
+	static Logger log = Logger.getLogger(JobManager.class);
 
 	private List<Runnable> jobs = null;
 

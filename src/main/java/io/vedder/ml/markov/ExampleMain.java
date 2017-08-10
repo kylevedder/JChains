@@ -20,7 +20,7 @@ import io.vedder.ml.markov.tokens.Token;
 
 public class ExampleMain {
 
-	static Logger log = Logger.getLogger(ExampleMain.class.getName());
+	static Logger log = Logger.getLogger(ExampleMain.class);
 	public static boolean verbose = false;
 
 	private static int lookback = 1;

@@ -9,7 +9,6 @@ import java.util.Set;
 
 import org.apache.log4j.Logger;
 
-import io.vedder.ml.markov.ExampleMain;
 import io.vedder.ml.markov.LookbackContainer;
 import io.vedder.ml.markov.holder.TokenHolder;
 import io.vedder.ml.markov.tokenizer.Tokenizer;
@@ -26,7 +25,7 @@ import io.vedder.ml.markov.utils.Utils;
  */
 public class FileTokenizer extends Tokenizer {
 
-	static Logger log = Logger.getLogger(ExampleMain.class.getName());
+	static Logger log = Logger.getLogger(FileTokenizer.class);
 
 	private final int LOOKBACK;
 	private final Set<String> END_MARKS;
