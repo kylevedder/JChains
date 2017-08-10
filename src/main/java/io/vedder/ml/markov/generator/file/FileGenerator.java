@@ -23,7 +23,7 @@ public class FileGenerator extends Generator {
 
 	@Override
 	public List<Token> generateTokenList() {
-		List<Token> line = new LinkedList<>();
+		List<Token> line = new LinkedList<Token>();
 
 		LookbackContainer c = new LookbackContainer(LOOKBACK, DELIMIT_TOKEN);
 		Token t = null;

@@ -12,12 +12,12 @@ public class FileTokenConsumer extends TokenConsumer {
 	@Override
 	public void consume(Collection<Token> collection) {
 		List<String> punctuation = Arrays.asList(",", ";", ":", ".", "?", "!", "-");
-		collection.forEach(w -> {
+		for(Token w : collection) {
 			if (!punctuation.contains(w.toString())) {
 				System.out.print(" ");
 			}
 			System.out.print(w.toString());
-		});
+		}
 		System.out.print("\n");
 	}
 

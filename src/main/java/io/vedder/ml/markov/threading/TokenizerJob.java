@@ -15,7 +15,6 @@ public class TokenizerJob implements Runnable {
 		this.tokenizer = tokenizer;
 	}
 
-	@Override
 	public void run() {
 		tokenizer.tokenize();
 		log.info("Tokenizer job complete!\n");

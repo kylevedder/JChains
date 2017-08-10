@@ -18,7 +18,7 @@ public class LookbackContainer {
 
 	public LookbackContainer(int maxSize, List<Token> ts) {
 		MAX_SIZE = maxSize;
-		tokenList = new ArrayList<>(ts);
+		tokenList = new ArrayList<Token>(ts);
 	}
 
 	/**
@@ -29,7 +29,7 @@ public class LookbackContainer {
 	 */
 	public void addToken(Token token) {
 		if (tokenList == null) {
-			tokenList = new LinkedList<>();
+			tokenList = new LinkedList<Token>();
 		}
 
 		if (tokenList.size() >= MAX_SIZE) {
@@ -48,7 +48,7 @@ public class LookbackContainer {
 	}
 
 	public LookbackContainer shrinkContainer() {
-		List<Token> lst = new LinkedList<>(tokenList);
+		List<Token> lst = new LinkedList<Token>(tokenList);
 		if (!lst.isEmpty()) {
 			lst.remove(0);
 		}

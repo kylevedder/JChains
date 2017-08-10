@@ -6,12 +6,11 @@ import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.apache.log4j.Logger;
 
-import io.vedder.ml.markov.LookbackContainer;
 import io.vedder.ml.markov.ExampleMain;
+import io.vedder.ml.markov.LookbackContainer;
 import io.vedder.ml.markov.holder.TokenHolder;
 import io.vedder.ml.markov.tokenizer.Tokenizer;
 import io.vedder.ml.markov.tokens.Token;
@@ -38,7 +37,7 @@ public class FileTokenizer extends Tokenizer {
 
 	public FileTokenizer(TokenHolder th, int lookback, String filePath) {
 		super(th);
-		END_MARKS = new HashSet<>(Arrays.asList(".", "?", "!"));
+		END_MARKS = new HashSet<String>(Arrays.asList(".", "?", "!"));
 		LOOKBACK = lookback;
 		this.filePath = filePath;
 	}
@@ -59,7 +58,7 @@ public class FileTokenizer extends Tokenizer {
 		for (int wordIndex = LOOKBACK; wordIndex < tokens.size() - 1; wordIndex++) {
 
 			// List for the lookback
-			List<Token> lookBackList = new ArrayList<>(this.LOOKBACK);
+			List<Token> lookBackList = new ArrayList<Token>(this.LOOKBACK);
 
 			Token t = null;
 
@@ -81,14 +80,15 @@ public class FileTokenizer extends Tokenizer {
 	}
 
 	private List<Token> getTokens(List<String> listStrings) {
-		List<Token> tokenList = new LinkedList<>();
+		List<Token> tokenList = new LinkedList<Token>();
 		tokenList.add(DELIMIT_TOKEN);
-		listStrings.forEach(s -> {
+		
+		for(String s : listStrings) {
 			tokenList.add(new StringToken(s));
 			if (END_MARKS.contains(s)) {
 				tokenList.add(DELIMIT_TOKEN);
 			}
-		});
+		}
 
 		// check to see if ends with delimiter token
 		if (tokenList.get(tokenList.size() - 1) != DELIMIT_TOKEN) {
@@ -100,11 +100,17 @@ public class FileTokenizer extends Tokenizer {
 	private List<String> splitStrings(List<String> lines) {
 		// Regex from:
 		// http://stackoverflow.com/questions/24222730/split-a-string-and-separate-by-punctuation-and-whitespace
-		// Sorry about the functional mess...
-		List<String> splits = lines.parallelStream()
-				.map(l -> Arrays.asList(l.replaceAll("  ", " ")
-						.split("\\s+|(?=\\W\\p{Punct}|\\p{Punct}\\W)|(?<=\\W\\p{Punct}|\\p{Punct}\\W})")))
-				.flatMap(l -> l.stream()).filter(w -> !w.isEmpty() && !w.equals("")).collect(Collectors.toList());
+		List<String> splits = new ArrayList<String>();
+		List<String> temp;
+		for (String s : lines) {
+			temp = Arrays.asList(s.replaceAll("  ", " ")
+					.split("\\s+|(?=\\W\\p{Punct}|\\p{Punct}\\W)|(?<=\\W\\p{Punct}|\\p{Punct}\\W})"));
+			for (String t : temp) {
+				if (t != "" && !t.isEmpty()) {
+					splits.add(t);
+				}
+			}
+		}
 		return splits;
 	}
 }
