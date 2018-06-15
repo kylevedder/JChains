@@ -31,11 +31,13 @@ public class ExampleMain {
 
 	/**
 	 * Example use of the Markov Chain library.
-	 * 
+	 *
 	 * @param args
 	 */
 	public static void main(String[] args) {
-		args = new String[] { "-v", "-i", "50000", "3", "10", "-f","inputs/shakespear.txt", "inputs/AllsWellThatEndsWell.txt" };
+		if (args.length == 0) {
+			args = new String[] {"-v", "-i", "50000", "3", "10", "-f", "inputs/shakespear.txt", "inputs/AllsWellThatEndsWell.txt"};
+		}
 
 		parseArgs(Arrays.asList(args));
 
