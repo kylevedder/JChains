@@ -8,7 +8,7 @@ import java.util.List;
 import io.vedder.ml.markov.tokens.Token;
 
 public class LookbackContainer {
-	private List<Token> tokenList = null;
+	private LinkedList<Token> tokenList = null;
 
 	private final int MAX_SIZE;
 
@@ -32,15 +32,15 @@ public class LookbackContainer {
 			tokenList = new LinkedList<>();
 		}
 
-		if (tokenList.size() >= MAX_SIZE) {
-			tokenList = tokenList.subList(tokenList.size() - MAX_SIZE + 1, tokenList.size());
-		}
+		while (tokenList.size() > MAX_SIZE)
+			tokenList.removeFirst();
+
 		tokenList.add(token);
 	}
 
 	/**
 	 * Returns if this container is empty.
-	 * 
+	 *
 	 * @return
 	 */
 	public boolean isEmpty() {
