@@ -29,12 +29,10 @@ public class FileTokenCollectionIterator implements Iterator<Token> {
 		return t;
 	}
 
-	@Override
 	public boolean hasNext() {
 		return (currentToken != null && currentToken != DELIMIT_TOKEN);
 	}
 
-	@Override
 	public Token next() {
 		Token t = currentToken;
 		currentToken = nextToken();

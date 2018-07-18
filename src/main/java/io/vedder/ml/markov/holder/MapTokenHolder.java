@@ -26,7 +26,7 @@ public class MapTokenHolder implements TokenHolder {
 
 	public MapTokenHolder(int mapInitialSize) {
 		r = new Random();
-		tokenMap = new ConcurrentHashMap<>(mapInitialSize);
+		tokenMap = new ConcurrentHashMap<LookbackContainer, Map<Token, Integer>>(mapInitialSize);
 	}
 
 	public void addToken(LookbackContainer lbc, Token next) {
@@ -34,7 +34,7 @@ public class MapTokenHolder implements TokenHolder {
 		if (tokenMap.containsKey(lbc)) {
 			nextElementMap = tokenMap.get(lbc);
 		} else {
-			nextElementMap = new HashMap<>();
+			nextElementMap = new HashMap<Token, Integer>();
 		}
 
 		if (!nextElementMap.isEmpty() && nextElementMap.containsKey(next)) {
@@ -79,15 +79,17 @@ public class MapTokenHolder implements TokenHolder {
 	@Override
 	public String toString() {
 		StringBuffer sb = new StringBuffer();
-		List<String> lst = new LinkedList<>();
+		List<String> lst = new LinkedList<String>();
 		for (Entry<LookbackContainer, Map<Token, Integer>> e : tokenMap.entrySet()) {
 			lst.add(e.toString() + "\n");
 
 		}
 		Collections.sort(lst);
 
-		lst.forEach(l -> sb.append(l));
-
+		for(String l : lst) {
+			sb.append(l);
+		}
+		
 		return sb.toString();
 	}
 

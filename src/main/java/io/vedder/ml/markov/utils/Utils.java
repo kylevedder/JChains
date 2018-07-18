@@ -1,10 +1,11 @@
 package io.vedder.ml.markov.utils;
 
+import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
+import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.nio.file.Files;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -25,14 +26,28 @@ public class Utils {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public static List<String> readFile(String filePath) {
-		List<String> lines = new LinkedList<>();
+		List<String> lines = new LinkedList<String>();
+		BufferedReader br = null;
 		try {
-			Files.lines(new File(filePath).toPath()).forEach(l -> lines.add(l + "\n"));
+			br = new BufferedReader(new FileReader(new File(filePath)));
+			String line;
+			while ((line = br.readLine()) != null) {
+				lines.add(line + "\n");
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
+		} finally {
+			if (br != null) {
+				try {
+					br.close();
+				} catch (IOException e) {
+					e.printStackTrace();
+				}
+			}
 		}
+
 		return lines;
 	}
 }

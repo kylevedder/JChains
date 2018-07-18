@@ -4,7 +4,6 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
@@ -21,7 +20,7 @@ import io.vedder.ml.markov.tokens.Token;
 
 public class ExampleMain {
 
-	static Logger log = Logger.getLogger(ExampleMain.class.getName());
+	static Logger log = Logger.getLogger(ExampleMain.class);
 	public static boolean verbose = false;
 
 	private static int lookback = 1;
@@ -66,7 +65,7 @@ public class ExampleMain {
 
 		// Kicks off the tokenization process
 
-		List<Collection<Token>> tokensCollections = new LinkedList<>();
+		List<Collection<Token>> tokensCollections = new LinkedList<Collection<Token>>();
 
 		// Creates Lists of tokens
 		for (int i = 0; i < numSent / 2; i++) {
@@ -80,7 +79,10 @@ public class ExampleMain {
 
 		// Consumer consumes both types of collections
 		log.info("Printing Tokens...\n" + "===============\n");
-		tokensCollections.forEach(l -> tc.consume(l));
+		
+		for(Collection<Token> l: tokensCollections) {
+			tc.consume(l);
+		}
 
 	}
 
@@ -93,8 +95,10 @@ public class ExampleMain {
 		if (args.size() < 3 || !args.contains("-f")) {
 			printUsageAndExit();
 		}
-
-		args = args.stream().map(a -> a.trim()).collect(Collectors.toList());
+		
+		for(String a : args) {
+			a = a.trim();
+		}
 
 		if (args.contains("-v")) {
 			verbose = true;

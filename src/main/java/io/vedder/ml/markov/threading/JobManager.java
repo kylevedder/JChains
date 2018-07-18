@@ -5,17 +5,16 @@ import java.util.List;
 
 import org.apache.log4j.Logger;
 
-import io.vedder.ml.markov.ExampleMain;
 import io.vedder.ml.markov.tokenizer.Tokenizer;
 
 public class JobManager {
 
-	static Logger log = Logger.getLogger(ExampleMain.class.getName());
+	static Logger log = Logger.getLogger(JobManager.class);
 
 	private List<Runnable> jobs = null;
 
 	public JobManager() {
-		jobs = new LinkedList<>();
+		jobs = new LinkedList<Runnable>();
 	}
 
 	public void addTokenizer(Tokenizer t) {
@@ -27,7 +26,7 @@ public class JobManager {
 	}
 
 	public void runAll() {
-		List<Thread> threads = new LinkedList<>();
+		List<Thread> threads = new LinkedList<Thread>();
 		for (Runnable r : jobs) {
 			Thread th = new Thread(r);
 			threads.add(th);

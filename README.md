@@ -5,10 +5,10 @@ A Markov Chain library for Java. Supports extensible tokenization and an arbitra
 
 **Build:**
  - Maven 3
- - JDK 8
+ - JDK 5 or newer
  
 **Run:**
- - JRE 8
+ - JRE 5 or newer
 
 ## Building
 

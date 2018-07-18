@@ -15,7 +15,6 @@ public class FileTokenCollection extends TokenCollection {
 		this.LOOKBACK = lookBack;
 	}
 
-	@Override
 	public Iterator<Token> iterator() {
 		return new FileTokenCollectionIterator(th, LOOKBACK);
 	}
