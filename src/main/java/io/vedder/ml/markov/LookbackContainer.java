@@ -18,7 +18,7 @@ public class LookbackContainer {
 
 	public LookbackContainer(int maxSize, List<Token> ts) {
 		MAX_SIZE = maxSize;
-		tokenList = new ArrayList<Token>(ts);
+		tokenList = new LinkedList<>(ts);
 	}
 
 	/**
